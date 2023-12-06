@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JobGPT"
         tools:targetApi="31">
+
+        <activity
+            android:name=".ui.screen.AlertsActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.screen.SettingsActivity"
             android:exported="false" />
@@ -32,6 +36,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".receiver.PluggedOutReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.PluggedInReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

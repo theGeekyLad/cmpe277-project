@@ -49,7 +49,10 @@ import androidx.navigation.compose.rememberNavController
 import com.rfid.hack277.nav.Page
 import com.rfid.jobgpt.nav.Fragment
 import com.rfid.jobgpt.ui.theme.JobGPTTheme
+import com.rfid.jobgpt.ui.widget.AppBar
+import com.rfid.jobgpt.ui.widget.Filters
 import com.rfid.jobgpt.ui.widget.JobDescriptionPager
+import com.rfid.jobgpt.ui.widget.Sources
 import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
@@ -75,82 +78,79 @@ class SettingsActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column {
-                        Column(
-                            modifier = Modifier.padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            Text(
-                                text = "Settings",
-                                style = MaterialTheme.typography.headlineMedium
-                            )
-
-                            Text(
-                                text = "Last synced: 11/24/2023 15:48",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                    Scaffold(
+                        topBar = {
+                            AppBar(applicationContext, "Settings")
                         }
-
-                        Scaffold(
-                            bottomBar = {
-                                BottomNavigation(
-                                    backgroundColor = MaterialTheme.colorScheme.primary,
-                                ) {
-                                    val navBackStackEntry by navController.currentBackStackEntryAsState()
-                                    val currentDestination = navBackStackEntry?.destination
-
-                                    navFragments.forEach { navFragment ->
-                                        BottomNavigationItem(
-                                            alwaysShowLabel = false,
-                                            icon = {
-                                                Icon(
-                                                    imageVector = navFragment.icon,
-                                                    contentDescription = null,
-                                                    tint = Color.White
-                                                )
-                                            },
-                                            label = {
-                                                Text(
-                                                    text = navFragment.title,
-                                                    color = Color.White,
-                                                    overflow = TextOverflow.Ellipsis
-                                                )
-                                            },
-                                            selected = currentDestination?.hierarchy?.any { it.route == navFragment.route } == true,
-                                            onClick = {
-                                                pageTitle = navFragment.title
-
-                                                navController.navigate(navFragment.route) {
-                                                    popUpTo(navController.graph.findStartDestination().id) {
-                                                        saveState = true
-                                                    }
-                                                    launchSingleTop = true
-                                                    restoreState = true
-                                                }
-                                            }
-                                        )
-                                    }
-
-                                }
-                            }
-                        ) { innerPadding ->
-                            NavHost(
-                                navController = navController,
-                                startDestination = Fragment.Filters.route,
-                                modifier = Modifier.padding(innerPadding)
+                    ) {
+                        Column {
+                            Column(
+                                modifier = Modifier
+                                    .padding(it)
+                                    .padding(horizontal = 16.dp)
+                                    .padding(top = 16.dp),
+                                verticalArrangement = Arrangement.spacedBy(16.dp)
                             ) {
-                                composable(Fragment.Filters.route) {
-                                    Column(
-                                        modifier = Modifier.padding(16.dp),
+                                Text(
+                                    text = "Last synced: 11/24/2023 15:48",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+
+                            Scaffold(
+                                bottomBar = {
+                                    BottomNavigation(
+                                        backgroundColor = MaterialTheme.colorScheme.primary,
                                     ) {
-                                        Text(text = "HelloFilters!")
+                                        val navBackStackEntry by navController.currentBackStackEntryAsState()
+                                        val currentDestination = navBackStackEntry?.destination
+
+                                        navFragments.forEach { navFragment ->
+                                            BottomNavigationItem(
+                                                alwaysShowLabel = false,
+                                                icon = {
+                                                    Icon(
+                                                        imageVector = navFragment.icon,
+                                                        contentDescription = null,
+                                                        tint = Color.White
+                                                    )
+                                                },
+                                                label = {
+                                                    Text(
+                                                        text = navFragment.title,
+                                                        color = Color.White,
+                                                        overflow = TextOverflow.Ellipsis,
+                                                        style = MaterialTheme.typography.titleSmall
+                                                    )
+                                                },
+                                                selected = currentDestination?.hierarchy?.any { it.route == navFragment.route } == true,
+                                                onClick = {
+                                                    pageTitle = navFragment.title
+
+                                                    navController.navigate(navFragment.route) {
+                                                        popUpTo(navController.graph.findStartDestination().id) {
+                                                            saveState = true
+                                                        }
+                                                        launchSingleTop = true
+                                                        restoreState = true
+                                                    }
+                                                }
+                                            )
+                                        }
+
                                     }
                                 }
-                                composable(Fragment.Sources.route) {
-                                    Column(
-                                        modifier = Modifier.padding(16.dp),
-                                    ) {
-                                        Text(text = "HelloSources!")
+                            ) { innerPadding ->
+                                NavHost(
+                                    navController = navController,
+                                    startDestination = Fragment.Filters.route,
+                                    modifier = Modifier.padding(innerPadding)
+                                ) {
+                                    composable(Fragment.Filters.route) {
+                                        Filters()
+                                    }
+                                    composable(Fragment.Sources.route) {
+                                        Sources()
                                     }
                                 }
                             }

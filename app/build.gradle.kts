@@ -92,4 +92,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
+
+    // work manager: Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+
 }
